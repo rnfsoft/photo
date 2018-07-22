@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
+from django.template.loader import render_to_string
 from django.views import View
 
 from .forms import PhotoForm
@@ -9,7 +10,7 @@ from .models import Photo
 class BasicUploadView(View):
     def get(self, request):
         photos = Photo.objects.all()
-        return render(self.request, 'photos.html', {'photos': photos})
+        return render(self.request, 'home.html', {'photos': photos})
 
     def post(self, request):
         form = PhotoForm(self.request.POST, self.request.FILES)
@@ -19,3 +20,17 @@ class BasicUploadView(View):
         else:
             data = {'is_valid': False}
         return JsonResponse(data)
+
+def photo_delete(request, pk):
+    photo = get_object_or_404(Photo, pk=pk)
+    data = dict()
+    if request.method == 'POST':
+        photo.file.delete()
+        photo.delete()
+        data['form_is_valid'] = True
+        photos = Photo.objects.all()
+        data['html_photo_list'] = render_to_string('photo_list.html', {'photos': photos})
+    else:
+        context = {'photo': photo}
+        data['html_form'] = render_to_string('photo_delete_form.html', context, request=request)   
+    return JsonResponse(data)

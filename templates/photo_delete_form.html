@@ -1,0 +1,14 @@
+<form method="post" action="{% url 'photo_delete_form' photo.id %}" class="js-photo-delete-form">
+{% csrf_token %}
+<div class="modal-header">
+    <h4 class="modal-title">Confirm photo deletion</h4>
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+</div>
+<div class="modal-body">
+    <p class="lead">Are you sure you want to delete the photo <strong>{{ photo.file.name }}</strong>?</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-danger">Delete photo</button>
+</div>
+</form>

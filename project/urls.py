@@ -22,8 +22,7 @@ from photo import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.BasicUploadView.as_view(), name='basic_upload'),
-
-  
+    path('photo/<int:pk>/delete/', views.photo_delete, name='photo_delete_form'),
 ]
 
 if settings.DEBUG:

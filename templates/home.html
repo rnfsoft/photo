@@ -1,0 +1,45 @@
+{% include 'base.html' %}
+{% load static %}
+{% block javascript %}
+  {# JQUERY FILE UPLOAD SCRIPTS #}
+  <script src="{% static 'js/jquery-file-upload/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery-file-upload/jquery.fileupload.js' %}"></script>
+  {# PHOTOS PAGE SCRIPTS #}
+  <script src="{% static 'photos/js/project.js' %}"></script>
+{% endblock %}
+
+{% block content%}
+<div class="w-75 p-3 mx-auto">
+    <button type="button" class="btn btn-primary js-upload-photos">
+        <i class="fa fa-cloud-upload" aria-hidden="true"> Upload photos</i>
+    </button>
+    <input id="fileupload" type="file" name="file" multiple
+          style="display: none;"
+          data-url="{% url 'basic_upload' %}"
+          data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+    <div class="card card-header text-center mt-2 mb-2" style="padding-top: 4rem; padding-bottom: 4rem;">
+      <span class="fa fa-arrow-down" style="font-size: 4rem;"></span>
+      <h3>Drop Photos Here to Upload</h3>
+    </div>
+    <table id="photo-table" class="table">
+      <thead>
+        <tr>
+          <th>Photo</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% include 'photo_list.html' %}
+      </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="modal-photo" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
